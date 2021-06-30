@@ -53,8 +53,13 @@ jobs:
         name: production-files
         path: ./out
 
-    - name: Deploy to condiment-bowl
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./out
+    - name: Deploy to Staging server
+    uses: easingthemes/ssh-deploy@v2
+    env:
+      SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+      ARGS: "-rltgoDzvO"
+      SOURCE: "./out"
+      REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+      REMOTE_USER: ${{ secrets.REMOTE_USER }}
+      TARGET: ${{ secrets.REMOTE_TARGET }}
+      EXCLUDE: "/dist/, /node_modules/"
